@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkPack | Placeholder</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/SplitText.min.js"></script>
+
+    <style>
+        :root {
+            --brand-title: #83c9c1;
+            --brand-sub: #2f81af;
+            --bg-color: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .main { text-align: center; }
+
+        .brand {
+            font-size: clamp(3rem, 12vw, 7.5rem);
+            font-weight: 900;
+            color: var(--brand-title);
+            text-transform: uppercase;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 1rem;
+            visibility: hidden; /* Mantém oculto até a animação começar */
+        }
+
+        .brand span { display: inline-block; }
+
+        .coming-soon {
+            font-size: clamp(0.8rem, 2vw, 1.1rem);
+            font-weight: 900;
+            color: var(--brand-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="main">
+        <h1 class="brand"></h1>
+        <div class="coming-soon">Coming Soon</div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Configuração dos Domínios 🌐
+            const domains = {
+                'ecopaper': {
+                    name: 'EcoPaper',
+                    html: '<span>Eco</span><span>Paper</span>'
+                },
+                'planetpack': {
+                    name: 'PlanetPack',
+                    html: '<span>Planet</span><span>Pack</span>'
+                }
+            };
+
+            // Detecção do domínio
+            const isPlanetPack = window.location.href.includes('planetpack');
+            const domain = domains[isPlanetPack ? 'planetpack' : 'ecopaper'];
+
+            // Injeção dinâmica 💉
+            document.querySelector('.brand').innerHTML = domain.html;
+            document.title = `ThinkPack | ${domain.name}`;
+
+            // 2. Preparação da Animação (Após a injeção!) 🎬
+            const spans = document.querySelectorAll(".brand span");
+            const csSplit = new SplitText(".coming-soon", { type: "words" });
+
+            gsap.set(".brand, .coming-soon", { visibility: "visible" });
+
+            const tl = gsap.timeline({
+                defaults: { ease: "expo.out", duration: 1.2 }
+            });
+
+            // Animação do primeiro bloco (ex: Eco ou Planet)
+            const firstSplit = new SplitText(spans[0], { type: "chars" });
+            tl.from(firstSplit.chars, {
+                opacity: 0,
+                y: 60,
+                rotateX: -90,
+                stagger: 0.05,
+                transformOrigin: "50% 50% -50"
+            });
+
+            // Animação do segundo bloco (ex: Paper ou Pack)
+            const secondSplit = new SplitText(spans[1], { type: "chars" });
+            tl.from(secondSplit.chars, {
+                opacity: 0,
+                y: 60,
+                rotateX: -90,
+                stagger: 0.05,
+                transformOrigin: "50% 50% -50"
+            }, "-=0.7"); // Sobreposição para suavizar a transição
+
+            // Entrada do "Coming Soon"
+            tl.from(csSplit.words, {
+                opacity: 0,
+                y: 20,
+                stagger: 0.2
+            }, "-=0.8");
+        });
+    </script>
+</body>
+</html>
