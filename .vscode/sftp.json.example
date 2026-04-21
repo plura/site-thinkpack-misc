@@ -1,0 +1,29 @@
+{
+    "profiles": {
+        "ecopaper": {
+            "name": "EcoPaper",
+            "host": "",
+            "protocol": "sftp",
+            "port": 22,
+            "username": "",
+            "password": "",
+            "remotePath": "/",
+            "uploadOnSave": false,
+            "useTempFile": false,
+            "openSsh": false
+        },
+        "planetpack": {
+            "name": "PlanetPack",
+            "host": "",
+            "protocol": "sftp",
+            "port": 22,
+            "username": "",
+            "password": "",
+            "remotePath": "/",
+            "uploadOnSave": false,
+            "useTempFile": false,
+            "openSsh": false
+        }
+    },
+    "defaultProfile": "ecopaper"
+}
